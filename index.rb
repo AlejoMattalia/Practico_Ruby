@@ -11,6 +11,19 @@ def guardar_personas()
     file.close
 end
 
+$mascotas = []
+def guardar_mascotas()
+    file = File.open("mascotas.txt", "r")
+    posicion = 0
+    file.each_line do |linea|
+        $mascotas[posicion] = linea
+        puts $mascotas[posicion]
+        posicion += 1
+    end
+    
+    file.close
+end
+    
 def seleccionar_persona()
     begin
         puts "0: Volver"
@@ -37,30 +50,23 @@ def seleccionar_persona()
     end
 end
 
-def modificar_persona()
+def modificar_persona() #FALTA HACER BIEN
     begin
         puts "0: Volver"
-        puts "1: Modificar Nombre"
-        puts "2: Modificar Apellido"
-        puts "3: Modificar Domicilio"
-        puts "4: Modificar Mascotas"
+        puts "1: Modificar Nombre" #FALTA 
+        puts "2: Modificar Apellido"#FALTA 
+        puts "3: Modificar Domicilio"#FALTA 
+        puts "4: Modificar Mascotas de la persona"#FALTA 
         
         puts "Por favor, selecciona alguna de las opciones de arriba colocando el numero:"
     
         opcion_modificar_persona = gets.chomp
         
         if opcion_modificar_persona == "4"
-            file = File.open("mascotas.txt", "r")
-            posicion = 0
-            mascotas = []
-            file.each_line do |linea|
-                mascotas[posicion] = linea
-                puts mascotas[posicion]
-                posicion += 1
-            end
-    
-            file.close
-            if mascotas.empty? 
+
+            guardar_mascotas()
+
+            if $mascotas.empty? 
                 raise "No hay ninguna mascota registrada, primero agrega una mascota"
             end
         elsif (opcion_modificar_persona == "5" || opcion_modificar_persona == "3")
@@ -85,6 +91,88 @@ def modificar_persona()
     end
 end
 
+def seleccionar_mascota()
+    begin
+        puts "0: Volver"
+        puts "1: Seleccionar Mascota por id"
+        
+        puts "Por favor, selecciona alguna de las opciones de arriba colocando el numero:"
+    
+        opcion_seleccionada_mascota = gets.chomp
+
+        if opcion_seleccionada_mascota != "1" && opcion_seleccionada_mascota != "0"
+            raise "No existe la opcion solicitada, vuelve a intentarlo"
+        end
+    
+    rescue StandardError => e
+        puts "Error: #{e.message}"
+        retry
+    end
+
+    case opcion_seleccionada_mascota
+    when "0"
+        inicio_programa()
+    when "1"
+        modificar_mascota()
+    end
+end
+
+def modificar_mascota() #FALTA HACER BIEN
+    begin
+        puts "0: Volver"
+        puts "1: Modificar Nombre" #FALTA 
+        puts "2: Modificar Fecha de Nacimiento"#FALTA 
+        puts "3: Modificar Genero"#FALTA 
+        puts "4: Modificar Tipo de mascota"#FALTA 
+        puts "5: Modificar Tipo de Raza"#FALTA 
+        
+        puts "Por favor, selecciona alguna de las opciones de arriba colocando el numero:"
+    
+        opcion_modificar_mascota = gets.chomp
+        
+        if opcion_modificar_mascota == "4"
+
+            guardar_mascotas()
+
+            if $mascotas.empty? 
+                raise "No hay ninguna mascota registrada, primero agrega una mascota"
+            end
+        elsif (opcion_modificar_mascota != "1" && opcion_modificar_mascota != "2" && opcion_modificar_mascota != "0")
+            raise "No existe la opcion solicitada, vuelve a intentarlo"
+        end
+    
+    rescue StandardError => e
+        puts "Error: #{e.message}"
+        retry
+    end
+
+    case opcion_modificar_mascota
+    when "0"
+        seleccionar_mascota()
+    end
+end
+
+def eliminar_persona_mascota() #AGREGAR BORRADO DE EL NUMERO INGRESADO
+    begin
+        puts "Para Volver envia 0, y para eliminar un animal coloca el id del animal:"
+    
+        numero_ingresado = gets.chomp
+        
+        if !numero_ingresado.match(/^\d+$/) # Verifica si la entrada contiene solo números
+            raise "La entrada debe contener solo números."
+        end
+    
+    rescue StandardError => e
+        puts "Error: #{e.message}"
+        retry
+    end
+
+    case numero_ingresado
+    when "0"
+        inicio_programa()
+    end
+end
+
 def inicio_programa()
 
     begin
@@ -101,17 +189,10 @@ def inicio_programa()
         opcion = gets.chomp
         
         if (opcion == "4" || opcion == "6")
-            file = File.open("mascotas.txt", "r")
-            posicion = 0
-            mascotas = []
-            file.each_line do |linea|
-                mascotas[posicion] = linea
-                puts mascotas[posicion]
-                posicion += 1
-            end
 
-            file.close
-            if mascotas.empty? 
+            guardar_mascotas()
+
+            if $mascotas.empty? 
                 raise "No hay ninguna mascota registrada, primero agrega una mascota"
             end
         elsif (opcion == "5" || opcion == "3")
@@ -199,11 +280,11 @@ def inicio_programa()
     when "3"
         seleccionar_persona()
     when "4"
-        puts "elejiste el 4"
+        seleccionar_mascota()
     when "5"
-        puts "elejiste el 5"
+        eliminar_persona_mascota()
     else
-        puts "elejiste el 6"
+        eliminar_persona_mascota()
     end
 end
 
