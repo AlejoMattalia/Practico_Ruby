@@ -1,9 +1,0 @@
-Persistencia de mascotas, 1
-
-mascotaId: 0
-nombre: Firulais
-fechaNacimiento: 2020-01-15
-genero: Macho
-tipo: Perro
-raza: Labrador
-
