@@ -1,0 +1,41 @@
+Persistencia de personas, 5
+
+personaId: 0
+nombre: sdsd
+apellido: sdsd
+dni: 2323
+domicilio: sds
+mascotas: []
+
+
+personaId: 1
+nombre: sdsd
+apellido: sdsd
+dni: 2323
+domicilio: dsdsdsdsd
+mascotas: []
+
+
+personaId: 2
+nombre: Franco
+apellido: sdsd
+dni: 2323
+domicilio: dsds
+mascotas: ["1", "2"]
+
+
+personaId: 3
+nombre: Franco
+apellido: Pigna
+dni: 23232
+domicilio: dsdsd
+mascotas: ["1"]
+
+
+personaId: 4
+nombre: Franco
+apellido: sdsd
+dni: 2323
+domicilio: sdsd
+mascotas: []
+
