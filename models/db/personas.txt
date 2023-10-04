@@ -1,4 +1,4 @@
-Persistencia de personas, 3
+Persistencia de personas, 6
 
 personaId: 0
 nombre: pablo
@@ -13,3 +13,24 @@ apellido: Suarez
 dni: 454545
 domicilio: santa fe
 mascotas: ["1"]
+
+personaId: 3
+nombre: asd
+apellido: asd
+dni: 45509115
+domicilio: as1
+mascotas: []
+
+personaId: 4
+nombre: asda
+apellido: asd
+dni: 34424545
+domicilio: a1
+mascotas: []
+
+personaId: 5
+nombre: asdasd
+apellido: asdas
+dni: 34234534
+domicilio: q1
+mascotas: []

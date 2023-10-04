@@ -205,20 +205,52 @@ def self.mostrar_personas
       mostrar_personas()
       seleccionar_persona_mascota('models/db/personas.txt')
     when "1"
-      puts "Ingresa el nuevo nombre:"
-      nuevo_nombre = gets.chomp
+
+      regex = /\A[\p{L}\s]+\z/
+      begin
+        puts "Ingresa el nuevo nombre:"
+        nuevo_nombre = gets.chomp
+
+        if !nuevo_nombre.match?(regex)
+          raise "El nombre debe tener solo letras."
+        end
+      rescue StandardError => e
+        puts "\nError: #{e.message}"
+        retry
+      end
 
       # Actualiza la información en el arreglo de personas
       personas[indice_linea + 1] = "nombre: #{nuevo_nombre}\n"
     when "2"
-      puts "Ingresa el nuevo apellido:"
-      nuevo_apellido = gets.chomp
+
+      regex = /\A[\p{L}\s]+\z/
+      begin
+        puts "Ingresa el nuevo apellido:"
+        nuevo_apellido = gets.chomp
+
+        if !nuevo_apellido.match?(regex)
+          raise "El nombre debe tener solo letras."
+        end
+      rescue StandardError => e
+        puts "\nError: #{e.message}"
+        retry
+      end
 
       # Actualiza la información en el arreglo de personas
       personas[indice_linea + 2] = "apellido: #{nuevo_apellido}\n"
     when "3"
-      puts "Ingresa el nuevo domicilio:"
-      nuevo_domicilio = gets.chomp
+      regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\s.,#-]+$/
+      begin
+        puts "Ingresa el nuevo domicilio:"
+        nuevo_domicilio = gets.chomp
+
+        if nuevo_domicilio !~ regex
+          raise "El domicilio debe tener letras y numeros."
+        end
+      rescue StandardError => e
+        puts "\nError: #{e.message}"
+        retry
+      end
 
       # Actualiza la información en el arreglo de personas
       personas[indice_linea + 4] = "domicilio: #{nuevo_domicilio}\n"

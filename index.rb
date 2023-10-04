@@ -120,11 +120,30 @@ def inicio_programa()
     when "0"
         puts "Programa terminado con exito"
     when "1"
-        puts "Ingresa un Nombre:"
-        nombre = gets.chomp
+        regex = /\A[\p{L}\s]+\z/
+        begin
+            puts "Ingresa un Nombre:"
+            nombre = gets.chomp
 
-        puts "Ingresa un Apellido:"
-        apellido = gets.chomp
+            if !nombre.match?(regex)
+                raise "El nombre debe tener solo letras."
+            end
+        rescue StandardError => e
+            puts "\nError: #{e.message}"
+            retry
+        end
+
+        begin
+            puts "Ingresa un Apellido:"
+            apellido = gets.chomp
+
+            if !apellido.match?(regex)
+                raise "El apellido debe tener solo letras."
+            end
+        rescue StandardError => e
+            puts "\nError: #{e.message}"
+            retry
+        end
 
         begin
             puts "Ingresa un documento de 8 dígitos:"
@@ -143,14 +162,33 @@ def inicio_programa()
             retry
         end
           
-          
+        regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\s.,#-]+$/
+        begin
+            puts "Ingresa un Domicilio:"
+            domicilio = gets.chomp
 
-        puts "Ingresa un Domicilio:"
-        domicilio = gets.chomp
+            if domicilio !~ regex
+                raise "El domicilio debe tener letras y numeros."
+            end
+        rescue StandardError => e
+            puts "\nError: #{e.message}"
+            retry
+        end
 
-        puts "Ingresa un el id de tus mascotas:"
-        mascotas_input = gets.chomp
-        mascotas = mascotas_input.split(',').map(&:strip)
+
+        regex = /^(\d+(, ?\d+)*)?$/
+        begin
+            puts "Ingresa un el id de tus mascotas:"
+            mascotas = gets.chomp
+
+            if mascotas != "" && mascotas !~ regex
+                raise "La entrada no es válida. Debe ser una lista de números separados por comas (o dejar en blanco)."
+            end
+        rescue StandardError => e
+            puts "\nError: #{e.message}"
+            retry
+        end
+
         
 
         personaCreada = Persona.new(nil, nombre, apellido, documento_numero_entero, domicilio, mascotas)
@@ -167,8 +205,18 @@ def inicio_programa()
         puts "Ingresa nombre de la mascota:"
         mascota_nombre = gets.chomp
 
-        puts "Ingresa fecha de nacimiento de la mascota:"
-        fecha_nacimiento = gets.chomp
+        regex = /^\d{2}\/\d{2}\/\d{4}$/
+        begin
+            puts "Ingresa fecha de nacimiento de la mascota en formato dd/mm/aaaa:"
+            fecha_nacimiento = gets.chomp
+
+            if fecha_nacimiento != "" && fecha_nacimiento !~ regex
+                raise "La fecha de nacimiento no está en el formato correcto (dd/mm/aaaa)."
+            end
+        rescue StandardError => e
+            puts "\nError: #{e.message}"
+            retry
+        end
 
         puts "Ingresa genero de la mascota:"
         mascota_genero = gets.chomp
