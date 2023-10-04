@@ -1,7 +1,6 @@
-require_relative 'TextController'
 require_relative '../models/mascota'
 
-class MascotaController
+class MascotaController < TextController
   @@header = ""
   INITIAL_HEADER = "Persistencia de mascotas, 0\n"  # Encabezado inicial
 
@@ -30,7 +29,7 @@ class MascotaController
     end
 
     # Serializar la mascota y agregarla al archivo con el nuevo índice
-    mascota_text = TextController.serialize_to_text({
+    mascota_text = self.serialize_to_text({
       mascotaId: mascota.mascotaId,
       nombre: mascota.nombre,
       fechaNacimiento: mascota.fechaNacimiento,
@@ -59,7 +58,7 @@ class MascotaController
 
     # Iterar a través de los registros y crear objetos Mascota
     mascotas_data.each do |mascota_text|
-      mascota = TextController.deserialize_from_text(mascota_text, Mascota)
+      mascota = self.deserialize_from_text(mascota_text, Mascota)
       mascotas << mascota
     end
 

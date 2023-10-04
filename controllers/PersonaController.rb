@@ -1,7 +1,6 @@
-require_relative 'TextController'
 require_relative '../models/persona'
 
-class PersonaController
+class PersonaController < TextController
   @@header = ""
   INITIAL_HEADER = "Persistencia de personas, 0\n"  # Encabezado inicial
 
@@ -30,7 +29,7 @@ class PersonaController
     end
 
     # Serializar la persona y agregarla al archivo con el nuevo índice
-    persona_text = TextController.serialize_to_text({
+    persona_text = self.serialize_to_text({
       personaId: persona.personaId,
       nombre: persona.nombre,
       apellido: persona.apellido,
@@ -59,7 +58,7 @@ class PersonaController
 
     # Iterar a través de los registros y crear objetos Persona
     personas_data.each do |persona_text|
-      persona = TextController.deserialize_from_text(persona_text, Persona)
+      persona = self.deserialize_from_text(persona_text, Persona)
       personas << persona
     end
 
