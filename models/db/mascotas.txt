@@ -1,9 +1,36 @@
 Persistencia de mascotas, 1
 
 mascotaId: 0
+nombre: Roque
+fechaNacimiento: 2020-01-15
+genero: Macho
+tipo: Perro
+raza: Labrador
+
+mascotaId: 1
+nombre: roco
+fechaNacimiento: 2020-01-15
+genero: Macho
+tipo: Perro
+raza: Labrador
+
+mascotaId: 2
+nombre: Lola
+fechaNacimiento: 2020-01-15
+genero: Macho
+tipo: Perro
+raza: Labrador
+
+mascotaId: 3
 nombre: Firulais
 fechaNacimiento: 2020-01-15
 genero: Macho
 tipo: Perro
 raza: Labrador
 
+mascotaId: 4
+nombre: Luis
+fechaNacimiento: 2020-01-15
+genero: Macho
+tipo: Perro
+raza: Labrador

@@ -1,4 +1,4 @@
-Persistencia de personas, 5
+Persistencia de personas, 6
 
 personaId: 0
 nombre: sdsd
@@ -21,7 +21,7 @@ nombre: Franco
 apellido: sdsd
 dni: 2323
 domicilio: dsds
-mascotas: ["1", "2"]
+mascotas: ["3", "2", "4", "1"]
 
 
 personaId: 3
@@ -38,4 +38,12 @@ apellido: sdsd
 dni: 2323
 domicilio: sdsd
 mascotas: []
+
+
+personaId: 5
+nombre: Alejo
+apellido: Mattalia
+dni: 45482228
+domicilio: Buenos Aires 186
+mascotas: ["2"]
 

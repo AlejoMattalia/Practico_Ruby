@@ -62,6 +62,15 @@ class TextController
   
       # Crear una instancia del tipo especificado (Persona o Mascota) y asignar los valores a los atributos
       if klass == Persona
+        # Verificar si la clave :mascotas existe en data y si es un arreglo
+        if data.key?(:mascotas) && data[:mascotas].start_with?("[") && data[:mascotas].end_with?("]")
+          # Si es un arreglo, conviértelo a un arreglo de enteros
+          data[:mascotas] = data[:mascotas].scan(/"(\d+)"/).flatten.map { |m| m.gsub(/\s+/, '').delete('"').to_i }
+        else
+          # Si no es un arreglo, asigna un arreglo vacío
+          data[:mascotas] = []
+        end
+      
         objeto = Persona.new(data[:personaId], data[:nombre], data[:apellido], data[:dni], data[:domicilio], data[:mascotas])
       elsif klass == Mascota
         objeto = Mascota.new(data[:mascotaId], data[:nombre], data[:fechaNacimiento], data[:genero], data[:tipo], data[:raza])

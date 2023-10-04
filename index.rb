@@ -31,26 +31,26 @@ puts "Domicilio: #{persona_deserializada.domicilio}"
 
 =end
 
-puts "Ingrese los datos de la persona:"
-print "Nombre: "
-nombre = gets.chomp
-print "Apellido: "
-apellido = gets.chomp
-print "DNI: "
-dni = gets.chomp.to_i
-print "Domicilio: "
-domicilio = gets.chomp
+# puts "Ingrese los datos de la persona:"
+# print "Nombre: "
+# nombre = gets.chomp
+# print "Apellido: "
+# apellido = gets.chomp
+# print "DNI: "
+# dni = gets.chomp.to_i
+# print "Domicilio: "
+# domicilio = gets.chomp
 
-# Solicitar mascotas al usuario y convertirlas en un arreglo
-print "Mascotas (separadas por comas, presione Enter si no tiene): "
-mascotas_input = gets.chomp
-mascotas = mascotas_input.split(',').map(&:strip)
+# # Solicitar mascotas al usuario y convertirlas en un arreglo
+# print "Mascotas (separadas por comas, presione Enter si no tiene): "
+# mascotas_input = gets.chomp
+# mascotas = mascotas_input.split(',').map(&:strip)
 
-# Crear una instancia de Persona con los datos ingresados
-persona = Persona.new(nil, nombre, apellido, dni, domicilio, mascotas)
+# # Crear una instancia de Persona con los datos ingresados
+# persona = Persona.new(nil, nombre, apellido, dni, domicilio, mascotas)
 
-# Guardar la persona en el archivo personas.txt usando PersonaController
-PersonaController.guardar_persona(persona)
+# # Guardar la persona en el archivo personas.txt usando PersonaController
+# PersonaController.guardar_persona(persona)
 
 puts "La persona ha sido guardada exitosamente en personas.txt."
 PersonaController.mostrar_personas
