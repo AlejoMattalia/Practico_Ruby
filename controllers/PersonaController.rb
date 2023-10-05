@@ -60,46 +60,25 @@ class PersonaController
     # Iterar a través de los registros y crear objetos Persona
     personas_data.each do |persona_text|
       persona = TextController.deserialize_from_text(persona_text, Persona)
-      personas << persona
+    
+      # Verificar si persona.mascotas es un arreglo
+      if !persona.mascotas.is_a?(Array)
+        # Si no es un arreglo, entonces procesa la cadena de mascotas
+        persona.mascotas = persona.mascotas.gsub(/\[|\]/, "").split(',').map(&:to_i)
+      end
+
+      personas << persona 
     end
 
     personas
   end
-
-=begin
-  def self.mostrar_personas
-    # Llamar al método cargar_personas para obtener la lista de personas
-    personas = cargar_personas
-
-    # Iterar a través de la lista de personas y mostrar sus detalles
-    personas.each_with_index do |persona, index|
-      next if index == 0 # Salta la primera iteración
-
-      puts "Persona ID: #{persona.personaId}"
-      puts "Nombre: #{persona.nombre}"
-      puts "Apellido: #{persona.apellido}"
-      puts "DNI: #{persona.dni}"
-      puts "Domicilio: #{persona.domicilio}"
-
-      if persona.mascotas.any?
-        # Convertir las cadenas de números en enteros y luego unirlas
-        mascotas_ids = persona.mascotas.map(&:to_i)
-        # mascotas_nombres = obtener_nombres_de_mascotas(mascotas_ids)  # Reemplaza obtener_nombres_de_mascotas con la lógica adecuada
-
-        # Mostrar los nombres de las mascotas separados por comas
-        puts "Mascotas: #{mascotas_ids.join(', ')}"
-      end
-      puts "------------------------"
-    end
-  end
-=end
 
 def self.mostrar_personas
     # Llamar al método cargar_personas para obtener la lista de personas
     personas = cargar_personas
   
     # Crear un hash para mapear IDs de mascotas a nombres
-    mascotas_nombres = obtener_nombres_de_mascotas
+    # mascotas_nombres = obtener_nombres_de_mascotas
   
     # Iterar a través de la lista de personas y mostrar sus detalles
     personas.each_with_index do |persona, index|
@@ -110,13 +89,21 @@ def self.mostrar_personas
       puts "Apellido: #{persona.apellido}"
       puts "DNI: #{persona.dni}"
       puts "Domicilio: #{persona.domicilio}"
-  
+
       if persona.mascotas.any?
-        # Convertir las cadenas de números en enteros y obtener los nombres de las mascotas
-        mascotas_nombres_persona = persona.mascotas.map { |mascota_id| mascotas_nombres[mascota_id.to_i] }
-  
-        # Mostrar los nombres de las mascotas separados por comas
-        puts "Mascotas: #{mascotas_nombres_persona.join(', ')}"
+
+        nombres_mascotas = []
+
+        persona.mascotas.map do |id|    
+          # Convertir las cadenas de números en enteros y obtener los nombres de las mascotas
+          nombre_mascota = obtener_nombres_de_mascotas(id)
+          # Mostrar los nombres de las mascotas separados por comas
+          nombres_mascotas << nombre_mascota
+        end
+
+        puts "Mascotas: #{nombres_mascotas.join(', ')}"
+      else
+        puts "Mascotas: 0"
       end
       puts "------------------------"
     end
@@ -272,17 +259,16 @@ def self.mostrar_personas
   end
   
   # Un método para obtener un hash de IDs de mascotas a nombres de mascotas
-  def self.obtener_nombres_de_mascotas
+  def self.obtener_nombres_de_mascotas(id)
     # Llamar al método cargar_mascotas para obtener la lista de mascotas
     mascotas = MascotaController.cargar_mascotas
+
+    mascota_encontrada = mascotas.find { |mascota| mascota.mascotaId.to_i == id }
+
+    nombre_mascota = mascota_encontrada.nombre
+
+    return nombre_mascota
   
-    # Crear un hash que mapea IDs de mascotas a nombres de mascotas
-    nombres_mascotas = {}
-    mascotas.each do |mascota|
-      nombres_mascotas[mascota.mascotaId] = mascota.nombre
-    end
-  
-    nombres_mascotas
   end
   
   private # Métodos privados

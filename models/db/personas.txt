@@ -1,4 +1,5 @@
 Persistencia de personas, 6
+Persistencia de personas, 6
 
 personaId: 0
 nombre: pablo
@@ -8,8 +9,25 @@ domicilio: asdasd
 mascotas: ["1"]
 
 personaId: 2
-nombre: Jorgelin
-apellido: Suarez
-dni: 454545
-domicilio: santa fe
+nombre: Franco
+apellido: sdsd
+dni: 2323
+domicilio: dsds
+mascotas: ["1", "2"]
+
+
+personaId: 3
+nombre: Franco
+apellido: Pigna
+dni: 23232
+domicilio: dsdsd
 mascotas: ["1"]
+
+
+personaId: 4
+nombre: Franco
+apellido: sdsd
+dni: 2323
+domicilio: sdsd
+mascotas: []
+
