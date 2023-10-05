@@ -1,7 +1,7 @@
+require_relative 'TextController'
 require_relative '../models/persona'
-require_relative '../controllers/MascotaController'
 
-class PersonaController < TextController
+class PersonaController
   @@header = ""
   INITIAL_HEADER = "Persistencia de personas, 0\n"  # Encabezado inicial
 
@@ -30,7 +30,7 @@ class PersonaController < TextController
     end
 
     # Serializar la persona y agregarla al archivo con el nuevo índice
-    persona_text = self.serialize_to_text({
+    persona_text = TextController.serialize_to_text({
       personaId: persona.personaId,
       nombre: persona.nombre,
       apellido: persona.apellido,
@@ -39,28 +39,12 @@ class PersonaController < TextController
       mascotas: persona.mascotas
     })
 
-    personas_text << "\n" << persona_text << "\n"
+    personas_text << "\n" << persona_text
 
     # Escribir el contenido actualizado en el archivo personas.txt
     File.write('models/db/personas.txt', personas_text)
-
-=begin
-    mascotas = MascotaController.cargar_mascotas
-    persona.mascotas.each do |mascota_id|
-      mascota_encontrada = mascotas.find { |m| m.mascotaId.to_i == mascota_id.to_i}
-      if mascota_encontrada
-        mascota_encontrada.personaId = persona.personaId
-        mascota_actualizada_texto = MascotaController.actualizar_mascotas(mascota_encontrada)
-        File.write('models/db/mascotas.txt', 
-        File.read('models/db/mascotas.txt').gsub(/mascotaId: #{mascota_encontrada.mascotaId}\n(.+?)\n\n/m, 
-        mascota_actualizada_texto + "\n\n"))
-      end
-    end
-=end
-  
   end
 
-  #Devuelve una lista de objetos persona
   def self.cargar_personas
     personas = []
 
@@ -75,7 +59,7 @@ class PersonaController < TextController
 
     # Iterar a través de los registros y crear objetos Persona
     personas_data.each do |persona_text|
-      persona = self.deserialize_from_text(persona_text, Persona)
+      persona = TextController.deserialize_from_text(persona_text, Persona)
       personas << persona
     end
 
@@ -127,9 +111,9 @@ def self.mostrar_personas
       puts "DNI: #{persona.dni}"
       puts "Domicilio: #{persona.domicilio}"
   
-      if persona.mascotas.length() > 0
+      if persona.mascotas.any?
         # Convertir las cadenas de números en enteros y obtener los nombres de las mascotas
-        mascotas_nombres_persona = persona.mascotas.map { |mascota_id| mascotas_nombres[mascota_id] }
+        mascotas_nombres_persona = persona.mascotas.map { |mascota_id| mascotas_nombres[mascota_id.to_i] }
   
         # Mostrar los nombres de las mascotas separados por comas
         puts "Mascotas: #{mascotas_nombres_persona.join(', ')}"
@@ -137,9 +121,156 @@ def self.mostrar_personas
       puts "------------------------"
     end
   end
-  
-  private
 
+  def self.persona_vacio()
+    lineas = File.readlines('models/db/personas.txt')
+
+    indice_linea = lineas.index { |linea| linea.include?("personaId: ") }
+    
+    if indice_linea.nil?
+        return false
+    end
+
+    return true
+  end
+
+  def self.eliminar_id_del_txt(id)
+    lineas = File.readlines('models/db/personas.txt')
+
+    # Encuentra la línea que contiene el ID a eliminar
+    indice_linea = lineas.index { |linea| linea.include?("personaId: #{id}") }
+    
+    if indice_linea.nil?
+        puts "No se encontró una persona con el ID #{id}."
+        return
+    end
+  
+    # Ajusta los IDs de las personas restantes
+    lineas.slice!(indice_linea, 7) # 7 para eliminar la línea con el ID y las siguientes 6 líneas
+
+  
+    # Vuelve a escribir todas las líneas restantes en el archivo
+    File.open('models/db/personas.txt', "w") do |archivoM|
+        archivoM.puts lineas
+    end
+
+    puts "Persona con ID #{id} eliminada correctamente."
+
+    PersonaController.mostrar_personas()
+  end
+
+  def self.modificar_persona(id)
+    # Lee todo el contenido del archivo de personas
+    personas = File.readlines('models/db/personas.txt')
+
+    # Busca la línea que contiene el ID especificado
+    indice_linea = personas.index { |linea| linea.include?("personaId: #{id}") }
+
+    if indice_linea.nil?
+      puts "No se encontró una persona con el ID #{id}."
+      puts("\n")
+      mostrar_personas()
+      seleccionar_persona_mascota('models/db/personas.txt')
+      return # Agrega un return para salir del método en este caso.
+    end
+
+    begin
+      # Muestra la información actual de la persona
+      puts "Información actual de la persona:"
+      puts("\n")
+      puts personas[indice_linea, 6] # Muestra las 6 líneas desde la línea del ID
+      puts "\n"
+
+      puts "0: Volver"
+      puts "1: Modificar Nombre"
+      puts "2: Modificar Apellido"
+      puts "3: Modificar Domicilio"
+      puts "4: Modificar Mascotas de la persona"
+      puts "Por favor, selecciona alguna de las opciones de arriba colocando el número:"
+
+      opcion_modificar_persona = gets.chomp
+
+      if (opcion_modificar_persona != "1" && opcion_modificar_persona != "2" && opcion_modificar_persona != "0" && opcion_modificar_persona != "3" && opcion_modificar_persona != "4")
+        raise "No existe la opción solicitada, vuelve a intentarlo"
+      end
+
+    rescue StandardError => e
+      puts "Error: #{e.message}"
+      retry
+    end
+
+    puts("\n")
+    case opcion_modificar_persona
+    when "0"
+      mostrar_personas()
+      seleccionar_persona_mascota('models/db/personas.txt')
+    when "1"
+
+      regex = /\A[\p{L}\s]+\z/
+      begin
+        puts "Ingresa el nuevo nombre:"
+        nuevo_nombre = gets.chomp
+
+        if !nuevo_nombre.match?(regex)
+          raise "El nombre debe tener solo letras."
+        end
+      rescue StandardError => e
+        puts "\nError: #{e.message}"
+        retry
+      end
+
+      # Actualiza la información en el arreglo de personas
+      personas[indice_linea + 1] = "nombre: #{nuevo_nombre}\n"
+    when "2"
+
+      regex = /\A[\p{L}\s]+\z/
+      begin
+        puts "Ingresa el nuevo apellido:"
+        nuevo_apellido = gets.chomp
+
+        if !nuevo_apellido.match?(regex)
+          raise "El nombre debe tener solo letras."
+        end
+      rescue StandardError => e
+        puts "\nError: #{e.message}"
+        retry
+      end
+
+      # Actualiza la información en el arreglo de personas
+      personas[indice_linea + 2] = "apellido: #{nuevo_apellido}\n"
+    when "3"
+      regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\s.,#-]+$/
+      begin
+        puts "Ingresa el nuevo domicilio:"
+        nuevo_domicilio = gets.chomp
+
+        if nuevo_domicilio !~ regex
+          raise "El domicilio debe tener letras y numeros."
+        end
+      rescue StandardError => e
+        puts "\nError: #{e.message}"
+        retry
+      end
+
+      # Actualiza la información en el arreglo de personas
+      personas[indice_linea + 4] = "domicilio: #{nuevo_domicilio}\n"
+    when "4"
+      # Aquí puedes agregar la lógica para modificar las mascotas de la persona.
+      # Puedes llamar a otros métodos o implementar la lógica necesaria.
+    end
+
+    # Vuelve a escribir todas las líneas en el archivo
+    File.open('models/db/personas.txt', "w") do |archivo|
+      archivo.puts personas
+    end
+
+    puts("\n")
+    puts "Persona con ID #{id} modificada correctamente."
+    puts("\n")
+    PersonaController.mostrar_personas()
+    seleccionar_persona_mascota('models/db/personas.txt')
+  end
+  
   # Un método para obtener un hash de IDs de mascotas a nombres de mascotas
   def self.obtener_nombres_de_mascotas
     # Llamar al método cargar_mascotas para obtener la lista de mascotas
@@ -154,4 +285,5 @@ def self.mostrar_personas
     nombres_mascotas
   end
   
+  private # Métodos privados
 end

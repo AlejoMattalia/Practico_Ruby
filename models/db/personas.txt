@@ -1,0 +1,15 @@
+Persistencia de personas, 6
+
+personaId: 0
+nombre: pablo
+apellido: schar
+dni: 1243143
+domicilio: asdasd
+mascotas: ["1"]
+
+personaId: 2
+nombre: Jorgelin
+apellido: Suarez
+dni: 454545
+domicilio: santa fe
+mascotas: ["1"]
