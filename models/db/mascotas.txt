@@ -1,0 +1,8 @@
+Persistencia de mascotas, 1
+
+mascotaId: 0
+nombre: jesus
+fechaNacimiento: 2020-19-8
+genero: Female
+tipo: gato
+raza: ninguno
