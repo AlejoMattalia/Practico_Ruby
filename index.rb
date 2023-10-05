@@ -69,13 +69,12 @@ def eliminar_persona_mascota(archivo)
 end
   
 def inicio_programa()
-
     begin
         puts "0: Salir"
         puts "1: Aregar Persona"
         puts "2: Aregar Mascota"
-        puts "3: Modificar Persona"
-        puts "4: Modificar Mascota"
+        puts "3: Mostrar / Modificar Persona"
+        puts "4: Mostrar / Modificar Mascota"
         puts "5: Eliminar Persona"
         puts "6: Eliminar Mascota"
         
