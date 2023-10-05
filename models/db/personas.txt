@@ -1,0 +1,15 @@
+Persistencia de personas, 2
+
+personaId: 0
+nombre: Franco
+apellido: Pignatelli
+dni: 43715958
+domicilio: Julio A Roca 2518 Funes
+mascotas[]: 
+
+personaId: 1
+nombre: Julia
+apellido: Schar
+dni: 12312212
+domicilio: Avenida Libertador 2
+mascotas[]: 0
