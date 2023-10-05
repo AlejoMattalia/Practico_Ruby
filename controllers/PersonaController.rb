@@ -78,7 +78,7 @@ def self.mostrar_personas
     personas = cargar_personas
   
     # Crear un hash para mapear IDs de mascotas a nombres
-    # mascotas_nombres = obtener_nombres_de_mascotas
+    mascotas_nombres = obtener_nombres_de_mascotas
   
     # Iterar a través de la lista de personas y mostrar sus detalles
     personas.each_with_index do |persona, index|
@@ -90,20 +90,12 @@ def self.mostrar_personas
       puts "DNI: #{persona.dni}"
       puts "Domicilio: #{persona.domicilio}"
 
-      if persona.mascotas.any?
-
-        nombres_mascotas = []
-
-        persona.mascotas.map do |id|    
-          # Convertir las cadenas de números en enteros y obtener los nombres de las mascotas
-          nombre_mascota = obtener_nombres_de_mascotas(id)
-          # Mostrar los nombres de las mascotas separados por comas
-          nombres_mascotas << nombre_mascota
-        end
-
-        puts "Mascotas: #{nombres_mascotas.join(', ')}"
-      else
-        puts "Mascotas: 0"
+      if persona.mascotas.length() > 0
+        # Convertir las cadenas de números en enteros y obtener los nombres de las mascotas
+        mascotas_nombres_persona = persona.mascotas.map { |mascota_id| mascotas_nombres[mascota_id] }
+  
+        # Mostrar los nombres de las mascotas separados por comas
+        puts "Mascotas: #{mascotas_nombres_persona.join(', ')}"
       end
       puts "------------------------"
     end
@@ -242,8 +234,28 @@ def self.mostrar_personas
       # Actualiza la información en el arreglo de personas
       personas[indice_linea + 4] = "domicilio: #{nuevo_domicilio}\n"
     when "4"
-      # Aquí puedes agregar la lógica para modificar las mascotas de la persona.
-      # Puedes llamar a otros métodos o implementar la lógica necesaria.
+      regex = /^(\d+(-\d+)*)?$/
+      begin
+        MascotaController.mostrar_mascotas()
+        puts "\n"
+        puts "Ingresa el id de tus mascotas separadas por guiones, y si no queres ninguna presiona enter:"
+        mascotas = gets.chomp
+
+        if mascotas !~ regex
+          raise "La entrada no es válida. Debe ser una lista de números separados por guiones (o dejar en blanco)."
+        elsif mascotas != ""
+          mascotitas = mascotas.split("-").map(&:to_i)
+          MascotaController.verificar_existencia_de_mascotas(mascotitas)
+        end
+      rescue StandardError => e
+        puts "\nError: #{e.message}"
+        retry
+      rescue Exception => e
+        puts "\nError: #{e.message}"
+        retry
+      end
+
+      personas[indice_linea + 5] = "mascotas[]: #{mascotas}\n"
     end
 
     # Vuelve a escribir todas las líneas en el archivo
@@ -259,16 +271,17 @@ def self.mostrar_personas
   end
   
   # Un método para obtener un hash de IDs de mascotas a nombres de mascotas
-  def self.obtener_nombres_de_mascotas(id)
+  def self.obtener_nombres_de_mascotas
     # Llamar al método cargar_mascotas para obtener la lista de mascotas
     mascotas = MascotaController.cargar_mascotas
-
-    mascota_encontrada = mascotas.find { |mascota| mascota.mascotaId.to_i == id }
-
-    nombre_mascota = mascota_encontrada.nombre
-
-    return nombre_mascota
   
+    # Crear un hash que mapea IDs de mascotas a nombres de mascotas
+    nombres_mascotas = {}
+    mascotas.each do |mascota|
+      nombres_mascotas[mascota.mascotaId] = mascota.nombre
+    end
+  
+    nombres_mascotas
   end
   
   private # Métodos privados

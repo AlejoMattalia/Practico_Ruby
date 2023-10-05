@@ -181,17 +181,21 @@ def inicio_programa()
             puts "Ingresa un el id de tus mascotas:"
             mascotas = gets.chomp
 
-            if mascotas != "" && mascotas !~ regex
+            if mascotas !~ regex
                 raise "La entrada no es válida. Debe ser una lista de números separados por comas (o dejar en blanco)."
+            elsif mascotas == ""
+                mascotas = nil
+                personaCreada = Persona.new(nil, nombre, apellido, documento_numero_entero, domicilio, mascotas)
+            else
+                personaCreada = Persona.new(nil, nombre, apellido, documento_numero_entero, domicilio, [mascotas])
             end
         rescue StandardError => e
             puts "\nError: #{e.message}"
             retry
+        rescue Exception => e
+            puts "\nError: #{e.message}"
+            retry
         end
-
-        
-
-        personaCreada = Persona.new(nil, nombre, apellido, documento_numero_entero, domicilio, [mascotas])
         PersonaController.guardar_persona(personaCreada)
 
 
@@ -227,7 +231,9 @@ def inicio_programa()
         puts "Ingresa que tipo de raza es:"
         mascota_raza = gets.chomp
 
-        mascotaCreada = Mascota.new(nil, mascota_nombre, fecha_nacimiento, mascota_genero, mascota_tipo, mascota_raza)
+        personaid = nil
+
+        mascotaCreada = Mascota.new(nil, mascota_nombre, fecha_nacimiento, mascota_genero, mascota_tipo, mascota_raza, personaid)
         MascotaController.guardar_mascota(mascotaCreada)
 
         puts "\n"
