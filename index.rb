@@ -191,7 +191,7 @@ def inicio_programa()
 
         
 
-        personaCreada = Persona.new(nil, nombre, apellido, documento_numero_entero, domicilio, mascotas)
+        personaCreada = Persona.new(nil, nombre, apellido, documento_numero_entero, domicilio, [mascotas])
         PersonaController.guardar_persona(personaCreada)
 
 
