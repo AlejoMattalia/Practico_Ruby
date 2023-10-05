@@ -7,9 +7,11 @@ class Persona
   def initialize(personaId, nombre, apellido, dni, domicilio, mascotas = [])
 
   # Verifica si las mascotas existen
-  verificar_existencia_de_mascotas(mascotas)
-  # Verifica si las mascotas tienen la propiedad personaId asignada
-  verificar_propiedad_persona_id(mascotas)
+  unless mascotas == nil
+    verificar_existencia_de_mascotas(mascotas)
+    # Verifica si las mascotas tienen la propiedad personaId asignada
+    verificar_propiedad_persona_id(mascotas)
+  end
 
     @personaId = personaId
     @nombre = nombre
