@@ -28,9 +28,6 @@ puts "Domicilio: #{persona_deserializada.domicilio}"
 # index.rb
 
 =begin
-
-=end
-
 puts "Ingrese los datos de la persona:"
 print "Nombre: "
 nombre = gets.chomp
@@ -53,46 +50,60 @@ persona = Persona.new(nil, nombre, apellido, dni, domicilio, mascotas)
 PersonaController.guardar_persona(persona)
 
 puts "La persona ha sido guardada exitosamente en personas.txt."
-PersonaController.mostrar_personas
-# Crea una instancia de Mascota con los datos deseados
-
+=end
 
 =begin
 
 def obtener_datos_mascota
-    print "Nombre de la mascota: "
-    nombre = gets.chomp
-  
-    print "Fecha de Nacimiento: "
-    fecha_nacimiento = gets.chomp
-  
-    print "Género: "
-    genero = gets.chomp
-  
-    print "Tipo: "
-    tipo = gets.chomp
-  
-    print "Raza: "
-    raza = gets.chomp
-  
-    { nombre: nombre, fecha_nacimiento: fecha_nacimiento, genero: genero, tipo: tipo, raza: raza }
-  end
-  
-  # Obtener los datos de la mascota
-  datos_mascota = obtener_datos_mascota
-  
-  # Crear una instancia de Mascota con los datos obtenidos
-  mascota = Mascota.new(nil, datos_mascota[:nombre], datos_mascota[:fecha_nacimiento], datos_mascota[:genero], datos_mascota[:tipo], datos_mascota[:raza])
+  print "Nombre de la mascota: "
+  nombre = gets.chomp
 
-  mascota = Mascota.new(1, "Firulais", "2020-01-15", "Macho", "Perro", "Labrador")
-  # Guardar la mascota en el archivo mascotas.txt usando MascotaController
-  
-  MascotaController.guardar_mascota(mascota)
+  print "Fecha de Nacimiento: "
+  fecha_nacimiento = gets.chomp
 
-  MascotaController.mostrar_mascotas
-  
-  puts "Mascota guardada con éxito!"
+  print "Género: "
+  genero = gets.chomp
+
+  print "Tipo: "
+  tipo = gets.chomp
+
+  print "Raza: "
+  raza = gets.chomp
+
+  { nombre: nombre, fecha_nacimiento: fecha_nacimiento, genero: genero, tipo: tipo, raza: raza }
+end
+
+# Obtener los datos de la mascota
+datos_mascota = obtener_datos_mascota
+
+# Crear una instancia de Mascota con los datos obtenidos
+
+=end
+#mascota = Mascota.new(nil, datos_mascota[:nombre], datos_mascota[:fecha_nacimiento], datos_mascota[:genero], datos_mascota[:tipo], datos_mascota[:raza])
+
+
+# Guardar la mascota en el archivo mascotas.txt usando MascotaController
+
+=begin
+
+
 
 =end
 
+persona = Persona.new(nil, 'Francisco', 'Blbal', 'dni', 'domicilio', [0])
+PersonaController.guardar_persona(persona)
+PersonaController.mostrar_personas
+
+=begin
+mascota = Mascota.new(nil, "Limon", "2020-01-15", "Hembra", "Perro", "Puddle", nil)
+MascotaController.guardar_mascota(mascota)
+MascotaController.mostrar_mascotas
+=end
+
+
+
+#puts "Mascota guardada con éxito!"
+
+#MascotaController.mostrar_mascotas
+# Crea una instancia de Mascota con los datos deseados
 

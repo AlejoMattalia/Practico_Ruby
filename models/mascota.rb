@@ -1,14 +1,15 @@
 require_relative 'animal.rb'
 
 class Mascota < Animal
-    attr_accessor :mascotaId, :nombre, :fechaNacimiento, :genero
+    attr_accessor :mascotaId, :nombre, :fechaNacimiento, :genero, :personaId
   
-    def initialize(mascotaId, nombre, fechaNacimiento, genero, tipo, raza)
+    def initialize(mascotaId, nombre, fechaNacimiento, genero, tipo, raza, personaId)
         super(tipo, raza) # Llama al constructor de la clase base (Animal)
         @mascotaId = mascotaId
         @nombre = nombre
         @fechaNacimiento = fechaNacimiento
         @genero = genero
+        @personaId = personaId
     end
   
     def to_text
@@ -18,7 +19,8 @@ class Mascota < Animal
         mascotaId: @mascotaId,
         nombre: @nombre,
         fechaNacimiento: @fechaNacimiento,
-        genero: @genero
+        genero: @genero,
+        personaId: @personaId
         })
         "#{animal_data}\n#{mascota_data}"
     end
@@ -29,7 +31,7 @@ class Mascota < Animal
       
       # Deserializar datos de Animal y Mascota
       animal = Animal.from_text(animal_data)
-      mascota = TextController.deserialize_from_text(mascota_data)
+      mascota = TextController.deserialize_from_text(mascota_data, Mascota)
   
       # Crear una instancia de Mascota
       Mascota.new(
@@ -37,6 +39,7 @@ class Mascota < Animal
         mascota[:nombre],
         mascota[:fechaNacimiento],
         mascota[:genero],
+        mascota[:personaId],
         animal.tipo,
         animal.raza
       )

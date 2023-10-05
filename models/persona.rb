@@ -1,9 +1,16 @@
 require_relative '../controllers/TextController'
+require_relative '../controllers/MascotaController'
 
 class Persona
   attr_accessor :personaId, :nombre, :apellido, :dni, :domicilio, :mascotas
 
   def initialize(personaId, nombre, apellido, dni, domicilio, mascotas = [])
+
+  # Verifica si las mascotas existen
+  verificar_existencia_de_mascotas(mascotas)
+  # Verifica si las mascotas tienen la propiedad personaId asignada
+  verificar_propiedad_persona_id(mascotas)
+
     @personaId = personaId
     @nombre = nombre
     @apellido = apellido
@@ -34,4 +41,23 @@ class Persona
       data[:mascotas]
     )
   end
+
+private
+
+  def verificar_existencia_de_mascotas(mascotas)
+    mascotas.each do |mascota|
+      unless MascotaController.cargar_mascotas.any? { |m| m.mascotaId.to_i == mascota.to_i }
+        raise MascotaNoExistente, "La mascota que desea asignar no existe."
+      end
+    end
+  end
+
+  def verificar_propiedad_persona_id(mascotas)
+    mascotas.each do |mascota|
+      if MascotaController.cargar_mascotas.any? { |m| m.mascotaId.to_i == mascota.to_i && m.personaId }
+        raise MascotaYaAsignada, "La mascota que desea asignar ya tiene un valor en su propiedad personaId."
+      end
+    end
+  end
+
 end
