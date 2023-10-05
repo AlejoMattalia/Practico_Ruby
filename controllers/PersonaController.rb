@@ -234,8 +234,28 @@ def self.mostrar_personas
       # Actualiza la información en el arreglo de personas
       personas[indice_linea + 4] = "domicilio: #{nuevo_domicilio}\n"
     when "4"
-      # Aquí puedes agregar la lógica para modificar las mascotas de la persona.
-      # Puedes llamar a otros métodos o implementar la lógica necesaria.
+      regex = /^(\d+(-\d+)*)?$/
+      begin
+        MascotaController.mostrar_mascotas()
+        puts "\n"
+        puts "Ingresa el id de tus mascotas separadas por guiones, y si no queres ninguna presiona enter:"
+        mascotas = gets.chomp
+
+        if mascotas !~ regex
+          raise "La entrada no es válida. Debe ser una lista de números separados por guiones (o dejar en blanco)."
+        elsif mascotas != ""
+          mascotitas = mascotas.split("-").map(&:to_i)
+          MascotaController.verificar_existencia_de_mascotas(mascotitas)
+        end
+      rescue StandardError => e
+        puts "\nError: #{e.message}"
+        retry
+      rescue Exception => e
+        puts "\nError: #{e.message}"
+        retry
+      end
+
+      personas[indice_linea + 5] = "mascotas[]: #{mascotas}\n"
     end
 
     # Vuelve a escribir todas las líneas en el archivo
