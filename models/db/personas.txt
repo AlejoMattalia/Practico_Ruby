@@ -1,4 +1,4 @@
-Persistencia de personas, 1
+Persistencia de personas, 4
 
 personaId: 0
 nombre: Franco
@@ -6,3 +6,11 @@ apellido: Pigna
 dni: 23232323
 domicilio: sds1
 mascotas[]: 
+
+personaId: 1
+nombre: Claudio
+apellido: sdsdsd
+dni: 23232323
+domicilio: sdsd1
+mascotas[]: 
+

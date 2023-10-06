@@ -10,13 +10,13 @@ class PersonaController
     personas_text = File.read('models/db/personas.txt')
 
     if personas_text.empty?
-      # Si está vacío, agregamos el encabezado
+      # Si está vacío, agregamos el encabezado inicial
       personas_text = INITIAL_HEADER
     end
 
     # Si `empty?` es TRUE, significa que es la primera vez que se guarda una persona
     if @@header.empty?
-      # Obtener el último número del encabezado actual
+      # Obtener el último número del encabezado (header del .txt)
       current_index = personas_text.match(/(\d+)$/).to_a.first.to_i
 
       # Calcular el próximo índice disponible
